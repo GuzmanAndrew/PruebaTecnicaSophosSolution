@@ -1,0 +1,1 @@
+Esta Api Rest tiene configurado Swagger en esta ruta /swagger-ui.html
