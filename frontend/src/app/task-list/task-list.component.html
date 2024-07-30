@@ -1,0 +1,55 @@
+<div class="container">
+  <h2>Task List</h2>
+
+  <form (ngSubmit)="addTask(taskForm)" #taskForm="ngForm">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" class="form-control" id="title" required [(ngModel)]="newTask.title"
+             name="title" #title="ngModel">
+      <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger">
+        Title is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <input type="text" class="form-control" id="description" required [(ngModel)]="newTask.description"
+             name="description" #description="ngModel">
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
+        Description is required.
+      </div>
+    </div>
+    <br>
+    <button type="submit"
+            class="btn btn-primary"
+            [ngClass]="{'btn-disabled': taskForm.form.invalid}"
+            [disabled]="taskForm.form.invalid">
+      Add Task
+    </button>
+  </form>
+
+  <ul class="list-group mt-3">
+    <li *ngFor="let task of tasks" class="list-group-item">
+      <div *ngIf="editingTask && editingTask.id === task.id">
+        <form (ngSubmit)="updateTask()">
+          <div class="form-group">
+            <label for="editTitle">Title:</label>
+            <input type="text" class="form-control" id="editTitle" required [(ngModel)]="editingTask.title" name="editTitle">
+          </div>
+          <div class="form-group">
+            <label for="editDescription">Description:</label>
+            <input type="text" class="form-control" id="editDescription" required [(ngModel)]="editingTask.description" name="editDescription">
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+        </form>
+      </div>
+      <div *ngIf="!(editingTask && editingTask.id === task.id)">
+        <h5>{{ task.title }}</h5>
+        <p>{{ task.description }}</p>
+        <button class="btn btn-secondary" (click)="editTask(task)">Edit</button>
+        <button class="btn btn-danger" (click)="deleteTask(task.id)">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
